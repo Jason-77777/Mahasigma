@@ -23,10 +23,10 @@ app.use("/users", userRoutes);
 // Koneksi ke MongoDB
 const connectDB = async () => {
     try {
-        await mongoose.connect(MONGO_URI);
+        await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log("✅ MongoDB terkoneksi");
     } catch (error) {
-        console.error("❌ Koneksi MongoDB gagal:", error);
+        console.error("❌ Koneksi MongoDB gagal:", error.message);
         process.exit(1);
     }
 };
