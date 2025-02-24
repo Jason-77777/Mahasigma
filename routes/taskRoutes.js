@@ -92,4 +92,23 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     }
 });
 
+const validateTask = (req, res, next) => {
+    const { title, description, completed } = req.body;
+
+    if (!title || !description) {
+        return res.status(400).json({ error: "Title dan description diperlukan" });
+    }
+
+    if (typeof title !== "string" || typeof description !== "string") {
+        return res.status(400).json({ error: "Title dan description harus berupa string" });
+    }
+
+    if (completed !== undefined && typeof completed !== "boolean") {
+        return res.status(400).json({ error: "Completed harus berupa boolean (true/false)" });
+    }
+
+    next();
+};
+
+
 module.exports = router;
