@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require("uuid");
 const Task = require("../models/Task");
 
 /**
@@ -5,8 +6,16 @@ const Task = require("../models/Task");
  */
 const addTask = async (req, res) => {
     try {
-        const { title, description, completed } = req.body;
-        const task = new Task({ title, description, completed, userId: req.user.id });
+        const { title, category, deadline, status } = req.body;
+
+        const task = new Task({
+            id: uuidv4(), // 🟢 Auto-generate ID
+            title,
+            category,
+            deadline,
+            status: status || "Belum Selesai" // Default "Belum Selesai"
+        });
+
         await task.save();
         res.status(201).json({ message: "Tugas berhasil ditambahkan", task });
     } catch (error) {
@@ -16,11 +25,11 @@ const addTask = async (req, res) => {
 };
 
 /**
- * 📌 Ambil semua tugas milik user
+ * 📌 Ambil semua tugas
  */
 const getTasks = async (req, res) => {
     try {
-        const tasks = await Task.find({ userId: req.user.id });
+        const tasks = await Task.find();
         res.json({ tasks });
     } catch (error) {
         console.error("❌ Error saat mengambil daftar tugas:", error);
@@ -33,7 +42,7 @@ const getTasks = async (req, res) => {
  */
 const getTaskById = async (req, res) => {
     try {
-        const task = await Task.findOne({ _id: req.params.id, userId: req.user.id });
+        const task = await Task.findOne({ id: req.params.id });
 
         if (!task) {
             return res.status(404).json({ error: "Tugas tidak ditemukan" });
@@ -52,7 +61,7 @@ const getTaskById = async (req, res) => {
 const updateTask = async (req, res) => {
     try {
         const task = await Task.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user.id },
+            { id: req.params.id },
             req.body,
             { new: true }
         );
@@ -73,7 +82,7 @@ const updateTask = async (req, res) => {
  */
 const deleteTask = async (req, res) => {
     try {
-        const task = await Task.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
+        const task = await Task.findOneAndDelete({ id: req.params.id });
 
         if (!task) {
             return res.status(404).json({ error: "Tugas tidak ditemukan" });
