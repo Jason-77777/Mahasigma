@@ -60,16 +60,19 @@ const getTaskById = async (req, res) => {
  */
 const updateTask = async (req, res) => {
     try {
-        const task = await Task.findOneAndUpdate(
-            { id: req.params.id },
-            req.body,
-            { new: true }
-        );
+        const task = await Task.findOne({ id: req.params.id });
 
         if (!task) {
             return res.status(404).json({ error: "Tugas tidak ditemukan" });
         }
 
+        // ✅ Update hanya jika field dikirim
+        if (req.body.title) task.title = req.body.title;
+        if (req.body.category) task.category = req.body.category;
+        if (req.body.deadline) task.deadline = req.body.deadline;
+        if (req.body.status) task.status = req.body.status; // Status bisa diubah
+
+        await task.save();
         res.json({ message: "Tugas berhasil diperbarui", task });
     } catch (error) {
         console.error("❌ Error saat memperbarui tugas:", error);
@@ -82,12 +85,13 @@ const updateTask = async (req, res) => {
  */
 const deleteTask = async (req, res) => {
     try {
-        const task = await Task.findOneAndDelete({ id: req.params.id });
+        const task = await Task.findOne({ id: req.params.id });
 
         if (!task) {
             return res.status(404).json({ error: "Tugas tidak ditemukan" });
         }
 
+        await Task.deleteOne({ id: req.params.id });
         res.json({ message: "Tugas berhasil dihapus" });
     } catch (error) {
         console.error("❌ Error saat menghapus tugas:", error);

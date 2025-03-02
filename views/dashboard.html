@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mahasigma</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Dashboard Mahasigma</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Dashboard Mahasigma</h1>
+        <h2 class="text-center">Dashboard Mahasigma</h2>
 
-        <!-- FORM BUAT TASK BARU -->
-        <div class="card p-3 mb-4">
-            <h4>Buat Task Baru</h4>
-            <form id="taskForm">
+        <div class="d-flex justify-content-center mb-3">
+            <button id="showTaskForm" class="btn btn-success me-2">Add Task</button>
+            <button id="getAllTasks" class="btn btn-primary">Get All Tasks</button>
+        </div>
+
+        <div id="taskFormContainer" class="d-none">
+            <form id="taskForm" class="mb-3">
                 <div class="mb-2">
                     <label for="title" class="form-label">Judul Task:</label>
                     <input type="text" id="title" class="form-control" required>
@@ -31,29 +33,58 @@
             </form>
         </div>
 
-        <!-- FILTER DAN SORT TASK -->
         <div class="mb-3">
-            <label for="filterCategory" class="form-label">Filter Kategori:</label>
-            <select id="filterCategory" class="form-select">
-                <option value="">Semua</option>
+            <label for="categoryFilter" class="form-label">Filter berdasarkan kategori:</label>
+            <select id="categoryFilter" class="form-select">
+                <option value="all">Semua</option>
+                <option value="sekolah">Sekolah</option>
+                <option value="kuliah">Kuliah</option>
+                <option value="kerja">Kerja</option>
             </select>
         </div>
         
-        <div class="mb-3">
-            <label for="filterStatus" class="form-label">Filter Status:</label>
-            <select id="filterStatus" class="form-select">
-                <option value="">Semua</option>
-                <option value="Belum Selesai">Belum Selesai</option>
-                <option value="Selesai">Selesai</option>
-            </select>
-        </div>
 
-        <!-- LIST TASK -->
-        <div id="taskList" class="row">
-            <!-- Task akan dimuat di sini -->
+        <div id="taskList" class="row"></div>
+    </div>
+
+    <!-- Modal Update Task -->
+    <div id="updateTaskModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content"></div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateTaskForm">
+                        <input type="hidden" id="updateTaskId">
+                        <div class="mb-2">
+                            <label for="updateTitle" class="form-label">Judul Task:</label>
+                            <input type="text" id="updateTitle" class="form-control" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="updateCategory" class="form-label">Kategori:</label>
+                            <input type="text" id="updateCategory" class="form-control" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="updateDeadline" class="form-label">Deadline:</label>
+                            <input type="date" id="updateDeadline" class="form-control" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="updateStatus" class="form-label">Status:</label>
+                            <select id="updateStatus" class="form-control">
+                                <option value="Belum Selesai">Belum Selesai</option>
+                                <option value="Selesai">Selesai</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Task</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="dashboard.js"></script>
 </body>
 </html>

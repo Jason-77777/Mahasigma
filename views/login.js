@@ -1,39 +1,28 @@
-document.getElementById("loginForm").addEventListener("submit", async function(event) {
-    event.preventDefault(); // Mencegah reload halaman
+document.getElementById("loginForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
 
     try {
-        const response = await fetch("http://localhost:3000/auth/login", {
+        const response = await fetch("http://127.0.0.1:3000/auth/login", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
         });
 
-        const result = await response.json();
-        const alertBox = document.getElementById("alertBox");
+        const data = await response.json();
+        console.log("🟢 Login Response:", data);
 
         if (response.ok) {
-            // Menyimpan token di cookie
-            document.cookie = `token=${result.token}; path=/; secure; HttpOnly`;
-
-            alertBox.className = "alert alert-success";
-            alertBox.innerText = "Login berhasil! Mengalihkan...";
-            alertBox.classList.remove("d-none");
-
-            // Alihkan ke halaman utama atau dashboard
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 2000);
+            localStorage.setItem("token", data.token); // Simpan token di localStorage
+            alert("Login berhasil!");
+            window.location.href = "dashboard.html"; // Redirect ke dashboard
         } else {
-            alertBox.className = "alert alert-danger";
-            alertBox.innerText = result.error || "Login gagal!";
-            alertBox.classList.remove("d-none");
+            alert("Login gagal: " + data.error);
         }
     } catch (error) {
-        console.error("Terjadi kesalahan:", error);
+        console.error("❌ Error:", error);
+        alert("Terjadi kesalahan, coba lagi.");
     }
 });
