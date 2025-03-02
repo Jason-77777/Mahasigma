@@ -1,3 +1,4 @@
+//connect database error atau tidak
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
