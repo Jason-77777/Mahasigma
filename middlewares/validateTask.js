@@ -1,3 +1,4 @@
+//untuk validasi task yg harus diisi fieldnya
 const validateTask = (req, res, next) => {
     const { title, category, deadline, status } = req.body;
 

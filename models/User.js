@@ -1,3 +1,4 @@
+//membuat konstanta yg diisi didalam user
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({

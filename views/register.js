@@ -1,3 +1,4 @@
+//untuk melakukan register + penambahan data user kedalam api
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("form");
 

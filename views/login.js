@@ -1,3 +1,4 @@
+//ini untuk login agar bisa menyimpan token, token bisa dilihat di terminal
 document.getElementById("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 

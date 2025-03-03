@@ -1,3 +1,8 @@
+//fitur register and login
+//fitur mengubah password menjadi hash
+//API SEDERHANA
+//JWT
+
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");

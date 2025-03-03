@@ -9,12 +9,13 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Dashboard Mahasigma</h2>
-
+<!-- ini fungsi task -->
         <div class="d-flex justify-content-center mb-3">
             <button id="showTaskForm" class="btn btn-success me-2">Add Task</button>
             <button id="getAllTasks" class="btn btn-primary">Get All Tasks</button>
+             <button id="logout" class="btn btn-danger">Logout</button>
         </div>
-
+<!-- ini untuk menambahkan task lagi -->
         <div id="taskFormContainer" class="d-none">
             <form id="taskForm" class="mb-3">
                 <div class="mb-2">
@@ -32,7 +33,7 @@
                 <button type="submit" class="btn btn-primary">Tambah Task</button>
             </form>
         </div>
-
+<!-- ini untuk filter -->
         <div class="mb-3">
             <label for="categoryFilter" class="form-label">Filter berdasarkan kategori:</label>
             <select id="categoryFilter" class="form-select">

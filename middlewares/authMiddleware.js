@@ -1,3 +1,4 @@
+//authentication JWT agar bisa masuk kedalam task
 const jwt = require("jsonwebtoken");
 
 
@@ -15,8 +16,9 @@ const authMiddleware = (req, res, next) => {
     }
 
     const token = parts[1];
-
+//handle error
     try {
+        //nama token rahasia
         const verified = jwt.verify(token, process.env.JWT_SECRET || "rahasia");
         console.log("✅ Verified Token:", verified);
         req.user = verified;
