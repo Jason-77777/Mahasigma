@@ -19,3 +19,8 @@ h2 {
 .alert {
     text-align: center;
 }
+
+.modal-body input, .modal-body select {
+    width: 100%;
+    max-width: 100%;
+}

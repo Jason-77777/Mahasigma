@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     getAllTasksBtn.addEventListener("click", fetchTasks);
     categoryFilter.addEventListener("change", fetchTasks);
-//fetch token
+    //fetch token
     async function fetchTasks() {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Gagal mengambil data:", error);
         }
     }
-//menampilkan tugas 
+    //menampilkan tugas 
     function renderTasks(tasks) {
         taskList.innerHTML = "";
         const selectedCategory = categoryFilter.value.toLowerCase();
@@ -62,7 +62,22 @@ document.addEventListener("DOMContentLoaded", () => {
             taskList.appendChild(taskElement);
         });
     }
-//menambahkan task
+    //menambahkan task
+    // Fungsi untuk menampilkan notifikasi di pojok kanan bawah
+    function showNotification(message, type = "success") {
+        const notification = document.createElement("div");
+        notification.className = `alert alert-${type} position-fixed bottom-0 end-0 m-3`;
+        notification.style.zIndex = "1000"; // Supaya muncul di atas elemen lain
+        notification.innerText = message;
+
+        document.body.appendChild(notification);
+
+        // Hapus notifikasi setelah 3 detik
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
     taskForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const token = localStorage.getItem("token");
@@ -90,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (response.ok) {
-                alert("Task berhasil ditambahkan.");
+                showNotification("Task berhasil ditambahkan!", "success");
                 fetchTasks();
             } else {
                 const result = await response.json();
@@ -110,49 +125,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const modal = new bootstrap.Modal(document.getElementById("updateTaskModal"));
         modal.show();
+
+        // Menampilkan notifikasi saat form update dibuka
+        showNotification("Form update task ditampilkan.", "info");
     };
-//update task
-    document.getElementById("updateTaskForm").addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const token = localStorage.getItem("token");
-        if (!token) {
-            alert("Token tidak ditemukan. Silakan login lagi.");
-            window.location.href = "index.html";
-            return;
+
+
+
+
+
+
+
+
+
+    //update task
+    // update task
+document.getElementById("updateTaskForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Token tidak ditemukan. Silakan login lagi.");
+        window.location.href = "index.html";
+        return;
+    }
+
+    const taskId = document.getElementById("updateTaskId").value;
+    const taskData = {
+        title: document.getElementById("updateTitle").value,
+        category: document.getElementById("updateCategory").value,
+        deadline: document.getElementById("updateDeadline").value,
+        status: document.getElementById("updateStatus").value
+    };
+
+    try {
+        const response = await fetch(`http://127.0.0.1:3000/tasks/${taskId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(taskData)
+        });
+
+        if (response.ok) {
+            showNotification("Task berhasil diperbarui!", "success");
+            fetchTasks();
+            const modal = bootstrap.Modal.getInstance(document.getElementById("updateTaskModal"));
+            modal.hide();
+        } else {
+            const result = await response.json();
+            alert(result.error);
         }
+    } catch (error) {
+        console.error("Gagal memperbarui tugas:", error);
+    }
+});
 
-        const taskId = document.getElementById("updateTaskId").value;
-        const taskData = {
-            title: document.getElementById("updateTitle").value,
-            category: document.getElementById("updateCategory").value,
-            deadline: document.getElementById("updateDeadline").value,
-            status: document.getElementById("updateStatus").value
-        };
 
-        try {
-            const response = await fetch(`http://127.0.0.1:3000/tasks/${taskId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(taskData)
-            });
 
-            if (response.ok) {
-                alert("Task berhasil diperbarui.");
-                fetchTasks();
-                const modal = bootstrap.Modal.getInstance(document.getElementById("updateTaskModal"));
-                modal.hide();
-            } else {
-                const result = await response.json();
-                alert(result.error);
-            }
-        } catch (error) {
-            console.error("Gagal memperbarui tugas:", error);
-        }
-    });
-//delete task
+
+
+
+
+
+    //delete task
     window.deleteTask = async (taskId) => {
         if (!confirm("Apakah Anda yakin ingin menghapus task ini?")) return;
         const token = localStorage.getItem("token");
@@ -185,6 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.removeItem("token"); // Hapus token
         window.location.href = "index.html"; // Redirect ke halaman login
     });
-    
+
 });
 
