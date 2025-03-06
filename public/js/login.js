@@ -18,7 +18,7 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
         if (response.ok) {
             localStorage.setItem("token", data.token); // Simpan token di localStorage
             alert("Login berhasil!");
-            window.location.href = "dashboard.html"; // Redirect ke dashboard
+            window.location.href = "/dashboard"; // Redirect ke dashboard
         } else {
             alert("Login gagal: " + data.error);
         }

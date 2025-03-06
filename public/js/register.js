@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("Registrasi berhasil!");
-                window.location.href = "login.html"; // Redirect ke halaman login
+                window.location.href = "/"; // Redirect ke halaman login
             } else {
                 alert("Registrasi gagal: " + data.error);
             }
